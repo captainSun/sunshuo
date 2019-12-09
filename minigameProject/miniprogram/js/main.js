@@ -28,10 +28,8 @@ export default class Main {
     this.aniId    = 0
     this.personalHighScore = null
     // this.login()
-    this.restart()
-    // canvas.addEventListener('touchstart', this.touchHandler)
-    // this.gameinfo = new GameInfo()
-    // this.gameinfo.renderStartGame(ctx)
+    this.init()
+    // this.restart()
   }
 
   login() {
@@ -66,6 +64,34 @@ export default class Main {
       })
   }
 
+  init()
+  {
+    databus.reset()
+    canvas.addEventListener('touchstart', this.touchHandler)
+
+    this.bg = new BackGround(ctx)
+    this.player = new Player(ctx)
+    this.gameinfo = new GameInfo()
+    this.music = new Music()
+
+    this.bindInitRender = this.initRender.bind(this)
+
+    window.cancelAnimationFrame(this.aniId)
+    this.aniId = window.requestAnimationFrame(
+      this.bindInitRender,
+      canvas
+    )
+    
+  }
+
+  initRender()
+  {
+   
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    this.bg.render(ctx)
+    console.log("=====================")
+  }
+
   restart() {
     databus.reset()
 
@@ -81,7 +107,6 @@ export default class Main {
 
     this.bindLoop     = this.loop.bind(this)
     this.hasEventBind = false
-
     // 清除上一局的动画
     window.cancelAnimationFrame(this.aniId);
 
@@ -181,7 +206,6 @@ export default class Main {
    */
   render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-
     this.bg.render(ctx)
 
     databus.bullets

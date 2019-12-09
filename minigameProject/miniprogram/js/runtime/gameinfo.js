@@ -69,7 +69,9 @@ export default class GameInfo {
   }
 
   renderStartGame(ctx) {
-    tx.drawImage(
+    ctx.drawImage(atlas, 270, 125, 383, 209, screenWidth / 2 - 150, screenHeight / 2 - 100, 300, 300)
+
+    ctx.drawImage(
       atlas,
       120, 6, 39, 24,
       screenWidth / 2 - 60,
