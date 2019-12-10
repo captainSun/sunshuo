@@ -8,7 +8,7 @@ import DataBus    from './databus'
 let ctx   = canvas.getContext('2d')
 let databus = new DataBus()
 
-let shotInterval = 15
+let shotInterval = 20
 
 wx.cloud.init({
   // env 参数说明：
@@ -67,32 +67,33 @@ export default class Main {
   init()
   {
     databus.reset()
-    canvas.addEventListener('touchstart', this.touchHandler)
 
     this.bg = new BackGround(ctx)
     this.player = new Player(ctx)
     this.gameinfo = new GameInfo()
     this.music = new Music()
-
     this.bindInitRender = this.initRender.bind(this)
 
-    // window.cancelAnimationFrame(this.aniId)
-    // this.aniId = window.requestAnimationFrame(
-    //   this.bindInitRender,
-    //   canvas
-    // )
-    setTimeout(this.bindInitRender, 200)
+    this.startTouchHandler = this.startTouchEventHandler.bind(this)
+    canvas.addEventListener('touchstart', this.startTouchHandler)
+    setTimeout(this.bindInitRender, 50)
   }
 
   initRender()
   {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     this.bg.render(ctx)
+    this.gameinfo.renderStartGame(ctx)
     console.log("=======initRender========")
   }
 
   restart() {
     databus.reset()
+
+    canvas.removeEventListener(
+      'touchstart',
+      this.startTouchHandler
+    )
 
     canvas.removeEventListener(
       'touchstart',
@@ -162,21 +163,21 @@ export default class Main {
 
         // 上传结果
         // 调用 uploadScore 云函数
-        wx.cloud.callFunction({
-          name: 'uploadScore',
-          // data 字段的值为传入云函数的第一个参数 event
-          data: {
-            score: databus.score
-          },
-          success: res => {
-            if (this.prefetchHighScoreFailed) {
-              this.prefetchHighScore()
-            }
-          },
-          fail: err => {
-            console.error('upload score failed', err)
-          }
-        })
+        // wx.cloud.callFunction({
+        //   name: 'uploadScore',
+        //   // data 字段的值为传入云函数的第一个参数 event
+        //   data: {
+        //     score: databus.score
+        //   },
+        //   success: res => {
+        //     if (this.prefetchHighScoreFailed) {
+        //       this.prefetchHighScore()
+        //     }
+        //   },
+        //   fail: err => {
+        //     console.error('upload score failed', err)
+        //   }
+        // })
 
         break
       }
@@ -196,6 +197,22 @@ export default class Main {
         && x <= area.endX
         && y >= area.startY
         && y <= area.endY  )
+      this.restart()
+  }
+
+  
+  startTouchEventHandler(e) {
+    e.preventDefault()
+
+    let x = e.touches[0].clientX
+    let y = e.touches[0].clientY
+
+    let area = this.gameinfo.startBtnArea
+
+    if (x >= area.startX
+      && x <= area.endX
+      && y >= area.startY
+      && y <= area.endY)
       this.restart()
   }
 

@@ -10,8 +10,8 @@ export default class GameInfo {
     ctx.font      = "20px Arial"
 
     ctx.fillText(
-      score,
-      10,
+      '击落:' + score,
+      5,
       30
     )
   }
@@ -69,22 +69,31 @@ export default class GameInfo {
   }
 
   renderStartGame(ctx) {
-    ctx.drawImage(atlas, 270, 125, 383, 209, screenWidth / 2 - 150, screenHeight / 2 - 100, 300, 300)
+    // ctx.drawImage(atlas, 270, 125, 383, 209, screenWidth / 2 - 150, screenHeight / 2 - 100, 300, 300)
 
     ctx.drawImage(
       atlas,
       120, 6, 39, 24,
       screenWidth / 2 - 60,
-      screenHeight / 2 - 100 + 180,
+      screenHeight / 2 - 100,
       120, 40
     )
+
+    ctx.fillStyle = "#ffffff"
+    ctx.font = "20px Arial"
 
     ctx.fillText(
       '开始游戏',
       screenWidth / 2 - 40,
-      screenHeight / 2 - 100 + 205
+      screenHeight / 2 - 100 + 25 
     )
 
+    this.startBtnArea = {
+      startX: screenWidth / 2 - 40,
+      startY: screenHeight / 2 - 100 ,
+      endX: screenWidth / 2 + 50,
+      endY: screenHeight / 2 - 100 + 75
+    }
   }
 }
 
