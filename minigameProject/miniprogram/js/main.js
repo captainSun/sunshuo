@@ -76,20 +76,19 @@ export default class Main {
 
     this.bindInitRender = this.initRender.bind(this)
 
-    window.cancelAnimationFrame(this.aniId)
-    this.aniId = window.requestAnimationFrame(
-      this.bindInitRender,
-      canvas
-    )
-    
+    // window.cancelAnimationFrame(this.aniId)
+    // this.aniId = window.requestAnimationFrame(
+    //   this.bindInitRender,
+    //   canvas
+    // )
+    setTimeout(this.bindInitRender, 200)
   }
 
   initRender()
   {
-   
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     this.bg.render(ctx)
-    console.log("=====================")
+    console.log("=======initRender========")
   }
 
   restart() {
@@ -207,7 +206,6 @@ export default class Main {
   render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     this.bg.render(ctx)
-
     databus.bullets
           .concat(databus.enemys)
           .forEach((item) => {
