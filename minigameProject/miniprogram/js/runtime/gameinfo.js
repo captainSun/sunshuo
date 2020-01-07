@@ -10,7 +10,7 @@ export default class GameInfo {
     ctx.font      = "20px Arial"
 
     ctx.fillText(
-      '击落:' + score,
+      '得分:' + score,
       5,
       30
     )
